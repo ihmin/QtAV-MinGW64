@@ -2,13 +2,15 @@ set(MODULE QtAVWidgets)
 set(EXTRA_DEFS -DBUILD_QTAVWIDGETS_LIB)
 list(APPEND EXTRA_DEFS -DQTAV_HAVE_GL=1)
 
-set(HAVE_QT5OPENGL 0)
-if(BUILD_QT5OPENGL)
-  find_package(Qt5OpenGL)
-  if(Qt5OpenGL_FOUND)
-    set(HAVE_QT5OPENGL 1)
+set(HAVE_QT6OPENGL 1)
+#if(BUILD_QT6OPENGL)
+  find_package(Qt6OpenGL)
+  if(Qt6OpenGL_FOUND)
+    set(HAVE_QT6OPENGL 1)
   endif()
-endif()
+#endif()
+
+find_package(Qt6 COMPONENTS Core Widgets Sql Qml OpenGL OpenGLWidgets REQUIRED)
 
 set(SDK_HEADERS
   QtAVWidgets/global.h
@@ -29,13 +31,13 @@ set(SOURCES
   VideoPreviewWidget.cpp
   WidgetRenderer.cpp
 )
-if(HAVE_QT5OPENGL)
+if(HAVE_QT6OPENGL)
   list(APPEND SDK_HEADERS QtAVWidgets/GLWidgetRenderer2.h)
   list(APPEND SOURCES GLWidgetRenderer2.cpp)
 endif()
 
-# TODO: Qt5Gui_OPENGL_IMPLEMENTATION?
-if(Qt5Gui_VERSION VERSION_LESS 5.4.0)
+# TODO: Qt6Gui_OPENGL_IMPLEMENTATION?
+if(Qt6Gui_VERSION VERSION_LESS 6.0.0)
   list(APPEND SDK_HEADERS QtAVWidgets/QOpenGLWidget.h)
   list(APPEND SOURCES QOpenGLWidget.cpp)
 endif()
@@ -49,11 +51,11 @@ endif()
 add_library(${MODULE} SHARED ${SOURCES} ${RESOURCES_SOURCES} ${HEADERS} ${RC_FILE})
 target_link_libraries(${MODULE}
   LINK_PRIVATE ${EXTRA_LIBS}
-  LINK_PUBLIC QtAV Qt5::Widgets
+  LINK_PUBLIC QtAV Qt6::Widgets Qt6::OpenGL Qt6::OpenGLWidgets
 )
-if(HAVE_QT5OPENGL)
-  target_link_libraries(${MODULE} LINK_PUBLIC Qt5::OpenGL)
-endif()
+
+target_link_libraries(${MODULE} LINK_PUBLIC)
+
 set_target_properties(${MODULE} PROPERTIES
   MACOSX_RPATH ON
   FRAMEWORK ON

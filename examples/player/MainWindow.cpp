@@ -29,10 +29,10 @@
 #include <QTimeEdit>
 #include <QLabel>
 #include <QApplication>
-#include <QDesktopWidget>
+//#include <QDesktopWidget>
 #include <QDesktopServices>
 #include <QtCore/QFileInfo>
-#include <QtCore/QTextCodec>
+//#include <QtCore/QTextCodec>
 #include <QtCore/QTextStream>
 #include <QtCore/QUrl>
 #include <QGraphicsOpacityEffect>
@@ -51,6 +51,7 @@
 #include <QKeyEvent>
 #include <QWheelEvent>
 #include <QStyleFactory>
+#include <QActionGroup>
 
 #include "ClickableMenu.h"
 #include "Slider.h"
@@ -440,9 +441,9 @@ void MainWindow::setupUi()
     subMenu->addAction(pWA); //must add action after the widget action is ready. is it a Qt bug?
     box->addItem(tr("Auto detect"), QString::fromLatin1("AutoDetect"));
     box->addItem(tr("System"), QString::fromLatin1("System"));
-    foreach (const QByteArray& cs, QTextCodec::availableCodecs()) {
-        box->addItem(QString::fromLatin1(cs), QString::fromLatin1(cs));
-    }
+//    foreach (const QByteArray& cs, QTextCodec::availableCodecs()) {
+//        box->addItem(QString::fromLatin1(cs), QString::fromLatin1(cs));
+//    }
     connect(box, SIGNAL(activated(QString)), SLOT(setSubtitleCharset(QString)));
     mpSubtitle->setCodec(box->itemData(box->currentIndex()).toByteArray());
     box->setToolTip(tr("Auto detect requires libchardet"));
@@ -1067,7 +1068,7 @@ void MainWindow::wheelEvent(QWheelEvent *e)
         return;
     }
 #endif //WHEEL_SPEED
-    QPointF p = mpRenderer->widget()->mapFrom(this, e->pos());
+    QPointF p = mpRenderer->widget()->mapFrom(this, e->position());
     QPointF fp = mpRenderer->mapToFrame(p);
     //qDebug() <<  p << fp;
     if (fp.x() < 0)
@@ -1124,7 +1125,7 @@ void MainWindow::help()
         return;
     }
     QTextStream ts(&f);
-    ts.setCodec("UTF-8");
+    //ts.setCodec("UTF-8");
     QString text = ts.readAll();
     QMessageBox::information(0, tr("Help"), text);
 }
@@ -1276,7 +1277,7 @@ void MainWindow::onTVMenuClick()
     static TVView *tvv = new TVView;
     tvv->show();
     connect(tvv, SIGNAL(clicked(QString,QString)), SLOT(onPlayListClick(QString,QString)));
-    tvv->setMaximumHeight(qApp->desktop()->height());
+    tvv->setMaximumHeight(qApp->screens()[0]->size().height());
     tvv->setMinimumHeight(tvv->width()*2);
 }
 

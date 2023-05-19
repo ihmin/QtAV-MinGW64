@@ -22,6 +22,7 @@
 #include "QtAVWidgets/GLWidgetRenderer2.h"
 #include "QtAV/private/OpenGLRendererBase_p.h"
 #include <QResizeEvent>
+#include <QPainter>
 
 namespace QtAV {
 
@@ -38,8 +39,8 @@ VideoRendererId GLWidgetRenderer2::id() const
     return VideoRendererId_GLWidget2;
 }
 
-GLWidgetRenderer2::GLWidgetRenderer2(QWidget *parent, const QGLWidget* shareWidget, Qt::WindowFlags f):
-    QGLWidget(parent, shareWidget, f)
+GLWidgetRenderer2::GLWidgetRenderer2(QWidget *parent, const QOpenGLWidget* shareWidget, Qt::WindowFlags f):
+    QOpenGLWidget(parent, f)
   , OpenGLRendererBase(*new GLWidgetRenderer2Private(this))
 {
     setAcceptDrops(true);
@@ -52,7 +53,7 @@ GLWidgetRenderer2::GLWidgetRenderer2(QWidget *parent, const QGLWidget* shareWidg
     setAttribute(Qt::WA_OpaquePaintEvent);
     setAttribute(Qt::WA_NoSystemBackground);
     //default: swap in qpainter dtor. we should swap before QPainter.endNativePainting()
-    setAutoBufferSwap(false);
+    //setAutoBufferSwap(false);
     setAutoFillBackground(false);
 }
 
@@ -73,7 +74,7 @@ void GLWidgetRenderer2::paintGL()
      * swapBuffers();
      */
     handlePaintEvent();
-    swapBuffers();
+    //swapBuffers();
     if (d.painter && d.painter->isActive())
         d.painter->end();
 }
@@ -86,7 +87,7 @@ void GLWidgetRenderer2::resizeGL(int w, int h)
 void GLWidgetRenderer2::resizeEvent(QResizeEvent *e)
 {
     onResizeEvent(e->size().width(), e->size().height());
-    QGLWidget::resizeEvent(e); //will call resizeGL(). TODO:will call paintEvent()?
+    QOpenGLWidget::resizeEvent(e); //will call resizeGL(). TODO:will call paintEvent()?
 }
 
 void GLWidgetRenderer2::showEvent(QShowEvent *)

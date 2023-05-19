@@ -23,8 +23,8 @@
 #define QTAV_GLWIDGETRENDERER2_H
 
 #include <QtAVWidgets/global.h>
-#if !defined(QT_NO_OPENGL) && QT_VERSION < QT_VERSION_CHECK(6,0,0)
-#include <QtOpenGL/QGLWidget>
+#if !defined(QT_NO_OPENGL) && QT_VERSION < QT_VERSION_CHECK(7,0,0)
+#include <QOpenGLWidget>
 #include <QtAV/OpenGLRendererBase.h>
 
 namespace QtAV {
@@ -35,7 +35,7 @@ class GLWidgetRenderer2Private;
  * Renderering video frames using GLSL. A more generic high level class OpenGLVideo is used internally.
  * TODO: for Qt5, no QtOpenGL, use QWindow instead.
  */
-class Q_AVWIDGETS_EXPORT GLWidgetRenderer2 : public QGLWidget, public OpenGLRendererBase
+class Q_AVWIDGETS_EXPORT GLWidgetRenderer2 : public QOpenGLWidget, public OpenGLRendererBase
 {
     Q_OBJECT
     DPTR_DECLARE_PRIVATE(GLWidgetRenderer2)
@@ -56,7 +56,7 @@ class Q_AVWIDGETS_EXPORT GLWidgetRenderer2 : public QGLWidget, public OpenGLRend
     Q_PROPERTY(QSize videoFrameSize READ videoFrameSize NOTIFY videoFrameSizeChanged)
     Q_ENUMS(Quality)
 public:
-    GLWidgetRenderer2(QWidget* parent = 0, const QGLWidget* shareWidget = 0, Qt::WindowFlags f = 0);
+    GLWidgetRenderer2(QWidget* parent = 0, const QOpenGLWidget* shareWidget = 0, Qt::WindowFlags f = {});
     virtual VideoRendererId id() const Q_DECL_OVERRIDE;
     virtual QWidget* widget() Q_DECL_OVERRIDE { return this; }
 Q_SIGNALS:

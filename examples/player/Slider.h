@@ -39,7 +39,7 @@ signals:
     void onHover(int pos, int value);
 
 protected:
-    virtual void enterEvent(QEvent* event);
+    virtual void enterEvent(QEnterEvent *event);
     virtual void leaveEvent(QEvent *e);
     virtual void mouseMoveEvent(QMouseEvent* event);
     virtual void mousePressEvent(QMouseEvent *event);

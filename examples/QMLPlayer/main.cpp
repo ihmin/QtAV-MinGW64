@@ -26,7 +26,7 @@
 #include <QtQml/QQmlEngine>
 #include <QtQml/QQmlContext>
 #include <QtGui/QScreen>
-#include <QTouchDevice>
+#include <QInputDevice>
 #ifdef Q_OS_ANDROID
 #include <QAndroidJniObject>
 #endif
@@ -97,13 +97,13 @@ qDebug() <<  "event dispatcher:" << QCoreApplication::eventDispatcher();
     if (qFuzzyIsNull(sr))
         sr = r;
     engine->rootContext()->setContextProperty(QStringLiteral("scaleRatio"), sr);
-    qDebug() << "touch devices: " << QTouchDevice::devices();
+    qDebug() << "touch devices: " << QInputDevice::devices();
     engine->rootContext()->setContextProperty(QStringLiteral("isTouchScreen"), false);
 #ifdef Q_OS_WINPHONE
     engine->rootContext()->setContextProperty(QStringLiteral("isTouchScreen"), true);
 #endif
-    foreach (const QTouchDevice* dev, QTouchDevice::devices()) {
-        if (dev->type() == QTouchDevice::TouchScreen) {
+    foreach (const QInputDevice* dev, QInputDevice::devices()) {
+        if (dev->type() == QInputDevice::DeviceType::TouchScreen) {
             engine->rootContext()->setContextProperty(QStringLiteral("isTouchScreen"), true);
             break;
         }

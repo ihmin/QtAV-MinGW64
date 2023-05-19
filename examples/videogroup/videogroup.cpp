@@ -20,7 +20,7 @@
 
 #include "videogroup.h"
 #include <QApplication>
-#include <QDesktopWidget>
+//#include <QDesktopWidget>
 #include <QEvent>
 #include <QFileDialog>
 #include <QGridLayout>
@@ -122,7 +122,7 @@ void VideoGroup::setSingleWindow(bool s)
         QGridLayout *layout = new QGridLayout;
         layout->setSizeConstraint(QLayout::SetMaximumSize);
         layout->setSpacing(1);
-        layout->setMargin(0);
+        //layout->setMargin(0);
         layout->setContentsMargins(0, 0, 0, 0);
         view->setLayout(layout);
 

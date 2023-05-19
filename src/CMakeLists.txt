@@ -12,7 +12,9 @@ INCLUDE(CheckTypeSize)
 include_directories(${QTDIR}/include) #TODO: remove. use external/include
 get_filename_component(QTDIR "${QTDIR}" ABSOLUTE)
 
-find_package(PkgConfig)
+find_package(Qt6 COMPONENTS Core Widgets Sql Qml OpenGL REQUIRED)
+
+#find_package(PkgConfig)
 
 list(APPEND EXTRA_INCLUDE ${QTAV_SOURCE_DIR}/external/include)
 list(APPEND EXTRA_LIBS ${CMAKE_LIBRARY_PATH_FLAG}${QTAV_SOURCE_DIR}/external/lib)
@@ -30,57 +32,57 @@ if(EXISTS ${QTAV_SOURCE_DIR}/contrib/capi/capi.h)
     list(APPEND EXTRA_DEFS -DQTAV_HAVE_CAPI=1)
 endif()
 
-pkg_check_modules (AVFORMAT libavformat REQUIRED)
+##pkg_check_modules (AVFORMAT libavformat REQUIRED)
 if(${AVFORMAT_FOUND})
     list(APPEND PKG_CONFIG_MODULES AVFORMAT)
     message("Found AVFORMAT: ${AVFORMAT_LINK_LIBRARIES}")
 endif()
 
-pkg_check_modules (AVCODEC libavcodec REQUIRED)
+#pkg_check_modules (AVCODEC libavcodec REQUIRED)
 if(${AVCODEC_FOUND})
     list(APPEND PKG_CONFIG_MODULES AVCODEC)
     message("Found AVCODEC: ${AVCODEC_LINK_LIBRARIES}")
 endif()
 
-pkg_check_modules (SWSCALE libswscale REQUIRED)
+#pkg_check_modules (SWSCALE libswscale REQUIRED)
 if(${SWSCALE_FOUND})
     list(APPEND PKG_CONFIG_MODULES SWSCALE)
     message("Found SWSCALE: ${SWSCALE_LINK_LIBRARIES}")
 endif()
 
-pkg_check_modules (AVUTIL libavutil REQUIRED)
+#pkg_check_modules (AVUTIL libavutil REQUIRED)
 if(${AVUTIL_FOUND})
     list(APPEND PKG_CONFIG_MODULES AVUTIL)
     message("Found AVUTIL: ${AVUTIL_LINK_LIBRARIES}")
 endif()
 
-pkg_check_modules (AVFILTER libavfilter)
+#pkg_check_modules (AVFILTER libavfilter)
 if(${AVFILTER_FOUND})
     list(APPEND PKG_CONFIG_MODULES AVFILTER)
     message("Found AVFILTER: ${AVFILTER_LINK_LIBRARIES}")
 endif()
 
-pkg_check_modules (AVDEVICE libavdevice)
+#pkg_check_modules (AVDEVICE libavdevice)
 if(${AVDEVICE_FOUND})
     list(APPEND PKG_CONFIG_MODULES AVDEVICE)
     message("Found AVDEVICE: ${AVDEVICE_LINK_LIBRARIES}")
 endif()
 
-pkg_check_modules (AVRESAMPLE libavresample)
+#pkg_check_modules (AVRESAMPLE libavresample)
 if(${AVRESAMPLE_FOUND})
     list(APPEND PKG_CONFIG_MODULES AVRESAMPLE)
     message("Found AVRESAMPLE: ${AVRESAMPLE_LINK_LIBRARIES}")
 endif()
 
-pkg_check_modules (SWRESAMPLE libswresample)
+#pkg_check_modules (SWRESAMPLE libswresample)
 if(${SWRESAMPLE_FOUND})
     list(APPEND PKG_CONFIG_MODULES SWRESAMPLE)
     message("Found SWRESAMPLE: ${SWRESAMPLE_LINK_LIBRARIES}")
 endif()
 
-if (NOT AVRESAMPLE_FOUND AND NOT SWRESAMPLE_FOUND)
-    message(FATAL_ERROR "swresample or avresample is required")
-endif()
+#if (NOT AVRESAMPLE_FOUND AND NOT SWRESAMPLE_FOUND)
+#    message(FATAL_ERROR "swresample or avresample is required")
+#endif()
 
 list(APPEND EXTRA_DEFS -DBUILD_QTAV_LIB -D__STDC_CONSTANT_MACROS)
 
@@ -206,28 +208,28 @@ endif()
 
 set(HAVE_EGL 0)
 set(DYNAMIC_GL 0)
-set(OPENGL 0)     #desktop opengl only
+set(OPENGL 1)     #desktop opengl only
 set(OPENGLES 0)   #glesv2 only
 set(HAVE_OPENGL 1) # qt with opengl enabled. 1 of DYNAMIC_GL, OPENGL and OPENGLES is true
-#get_target_property(QtGui_location Qt5::Gui LOCATION) #dll path
+#get_target_property(QtGui_location Qt6::Gui LOCATION) #dll path
 
-if(Qt5Gui_OPENGL_IMPLEMENTATION STREQUAL GL) # windows always set to GL
+if(Qt6Gui_OPENGL_IMPLEMENTATION STREQUAL GL) # windows always set to GL
   if(EXISTS ${QT_INSTALL_HEADERS}/QtANGLE)
-    set(DYNAMIC_GL 1) # assume Qt5Gui_OPENGL_IMPLEMENTATION is not GL if build with ANGLE only
-    if(NOT DEFINED Qt5Gui_EGL_INCLUDE_DIRS)
-      set(Qt5Gui_EGL_INCLUDE_DIRS ${QT_INSTALL_HEADERS}/QtANGLE)
+    set(DYNAMIC_GL 1) # assume Qt6Gui_OPENGL_IMPLEMENTATION is not GL if build with ANGLE only
+    if(NOT DEFINED Qt6Gui_EGL_INCLUDE_DIRS)
+      set(Qt6Gui_EGL_INCLUDE_DIRS ${QT_INSTALL_HEADERS}/QtANGLE)
     endif()
   else()
     set(OPENGL 1)
   endif()
-  if(DEFINED Qt5Gui_EGL_LIBRARIES) # x11?
-    set(HAVE_EGL 1)
+  if(DEFINED Qt6Gui_EGL_LIBRARIES) # x11?
+    set(HAVE_EGL 0)
   endif()
 else()
   set(OPENGLES 1)
 endif()
 if(OPENGLES OR DYNAMIC_GL)
-  set(HAVE_EGL 1)
+  set(HAVE_EGL 0)
 endif()
 if(NOT OPENGL AND NOT OPENGLES AND NOT DYNAMIC_GL)
   set(HAVE_OPENGL 0)
@@ -320,7 +322,7 @@ if(HAVE_OPENGL)
     filter/GLSLFilter.cpp
     output/video/OpenGLRendererBase.cpp
   )
-  if(NOT Qt5Gui_VERSION VERSION_LESS 5.4.0)
+  if(NOT Qt6Gui_VERSION VERSION_LESS 6.0.0)
     list(APPEND SDK_HEADERS QtAV/OpenGLWindowRenderer.h)
     list(APPEND SOURCES output/video/OpenGLWindowRenderer.cpp)
   endif()
@@ -329,11 +331,11 @@ endif()
 if(HAVE_EGL AND HAVE_CAPI)
   list(APPEND SOURCES capi/egl_api.cpp)
   # TODO: X11Extras
-  if(DEFINED Qt5Gui_EGL_INCLUDE_DIRS) # ANGLE
-    list(APPEND EXTRA_INCLUDE ${Qt5Gui_EGL_INCLUDE_DIRS})
+  if(DEFINED Qt6Gui_EGL_INCLUDE_DIRS) # ANGLE
+    list(APPEND EXTRA_INCLUDE ${Qt6Gui_EGL_INCLUDE_DIRS})
     #list(APPEND EXTRA_DEFS -DQTAV_HAVE_QT_EGL=1)
     if(NOT IOS)
-      list(APPEND EXTRA_DEFS -DQTAV_HAVE_EGL_CAPI=1)
+      list(APPEND EXTRA_DEFS -DQTAV_HAVE_EGL_CAPI=0)
       if(WindowsPhone OR WindowsStore)
         list(APPEND EXTRA_DEFS -DCAPI_LINK_EGL)
       endif()
@@ -345,7 +347,7 @@ if(WIN32 OR WindowsStore OR WindowsPhone)
   if(NOT HAVE_XAUDIO2_H)
     list(APPEND EXTRA_INCLUDE ${QTAV_SOURCE_DIR}/contrib/dxsdk)
   endif()
-  message("Qt5Gui_EGL_INCLUDE_DIRS: ${Qt5Gui_EGL_INCLUDE_DIRS}")
+  message("Qt6Gui_EGL_INCLUDE_DIRS: ${Qt6Gui_EGL_INCLUDE_DIRS}")
   list(APPEND HEADERS
     output/audio/xaudio2_compat.h
     codec/video/VideoDecoderD3D.h
@@ -449,15 +451,15 @@ if(HAVE_VAAPI)
   list(APPEND EXTRA_LIBS va X11)
 endif()
 
-if(NOT APPLE)
-  list(APPEND EXTRA_DEFS -DQTAV_HAVE_CUDA=1)
-  list(APPEND EXTRA_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/cuda)
-  list(APPEND SOURCES
-    cuda/cuda_api.cpp
-    codec/video/SurfaceInteropCUDA.cpp
-    codec/video/VideoDecoderCUDA.cpp
-  )
-endif()
+#if(NOT APPLE)
+#  list(APPEND EXTRA_DEFS -DQTAV_HAVE_CUDA=1)
+#  list(APPEND EXTRA_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/cuda)
+#  list(APPEND SOURCES
+#    cuda/cuda_api.cpp
+#    codec/video/SurfaceInteropCUDA.cpp
+#    codec/video/VideoDecoderCUDA.cpp
+#  )
+#endif()
 
 list(APPEND HEADERS ${SDK_HEADERS} ${SDK_PRIVATE_HEADERS}
     AVPlayerPrivate.h
@@ -488,7 +490,7 @@ list(APPEND HEADERS ${SDK_HEADERS} ${SDK_PRIVATE_HEADERS}
 # TODO: rc template
 SET(RESOURCES ${MODULE}.qrc shaders/shaders.qrc)
 SOURCE_GROUP("Resources" FILES ${RESOURCES})
-QT5_ADD_RESOURCES(RESOURCES_SOURCES ${RESOURCES})
+QT6_ADD_RESOURCES(RESOURCES_SOURCES ${RESOURCES})
 set_source_files_properties(${RESOURCES_SOURCES} PROPERTIES GENERATED ON)
 if(WIN32)
   set(RC_FILE ${CMAKE_CURRENT_BINARY_DIR}/${MODULE}.rc)
@@ -498,10 +500,13 @@ endif()
 add_library(${MODULE} SHARED ${SOURCES} ${RESOURCES_SOURCES} ${HEADERS} ${RC_FILE})
 
 list(REMOVE_DUPLICATES EXTRA_LIBS)
-# qt5_use_modules(since 2.8.9) is deprecated since cmake 2.8.11
+# qt6_use_modules(since 2.8.9) is deprecated since cmake 2.8.11
 target_link_libraries(${MODULE} 
   LINK_PRIVATE ${EXTRA_LIBS}
-  LINK_PUBLIC Qt5::Core Qt5::Gui # will add include dirs, macros etc.
+  LINK_PUBLIC Qt6::Core Qt6::Gui Qt6::OpenGL # will add include dirs, macros etc.
+  ${AVUTIL_LIBRARIES} ${AVCODEC_LIBRARIES} ${SWRESAMPLE_LIBRARIES}
+  ${AVFORMAT_LIBRARIES} ${AVFILTER_LIBRARIES} ${SWSCALE_LIBRARIES}
+  ${AVDEVICE_LIBRARIES}
 )
 
 foreach(PKG_CONFIG_MODULE ${PKG_CONFIG_MODULES})

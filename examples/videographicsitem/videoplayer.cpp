@@ -31,6 +31,7 @@
 #include <QPushButton>
 #include <QFileDialog>
 #include <QDial>
+#include <QOpenGLWidget>
 
 using namespace QtAV;
 
@@ -101,7 +102,7 @@ void VideoPlayer::setOpenGL(bool o)
         return;
     }
 #ifndef QT_NO_OPENGL
-    QGLWidget *glw = new QGLWidget();//QGLFormat(QGL::SampleBuffers));
+    QOpenGLWidget *glw = new QOpenGLWidget();//QGLFormat(QGL::SampleBuffers));
     glw->setAutoFillBackground(false);
     view->setViewport(glw);
     view->setCacheMode(QGraphicsView::CacheNone);

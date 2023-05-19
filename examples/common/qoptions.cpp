@@ -120,7 +120,7 @@ QString QOption::help() const
 
 bool QOption::operator <(const QOption& o) const
 {
-    return mType < o.type() || mShortName < o.shortName() || mLongName < o.longName() || mDescription < o.description();
+    return mType < o.type() && mShortName < o.shortName() && mLongName < o.longName() && mDescription < o.description();
 }
 
 static QString get_short(const QString& name)

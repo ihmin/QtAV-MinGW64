@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 2.8.11 FATAL_ERROR)
 
 project(QTAV)
 
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
 set(QTAV_MAJOR 1)
 set(QTAV_MINOR 13)
 set(QTAV_PATCH 0)
@@ -20,18 +24,45 @@ endif()
 set(CMAKE_CXX_VISIBILITY_PRESET hidden) #use with -fdata-sections -ffunction-sections to reduce target size
 set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
 
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+include(MacroUtils)
+
+set(FFMPEG_INCLUDE_DIRS     ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/include)
+set(AVCODEC_INCLUDE_DIRS    ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/include/libavcodec)
+set(AVDEVICE_INCLUDE_DIRS   ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/include/libavdevice)
+set(AVFILTER_INCLUDE_DIRS   ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/include/libavfilter)
+set(AVFORMAT_INCLUDE_DIRS   ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/include/libavformat)
+set(AVUTIL_INCLUDE_DIRS     ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/include/)
+set(SWSCALE_INCLUDE_DIRS    ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/include/libswscale)
+set(SWRESAMPLE_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/include/libswresample)
+
+set(AVCODEC_LIBRARIES       ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/bin/avcodec.lib)
+set(AVDEVICE_LIBRARIES      ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/bin/avdevice.lib)
+set(AVFILTER_LIBRARIES      ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/bin/avfilter.lib)
+set(AVFORMAT_LIBRARIES      ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/bin/avformat.lib)
+set(AVUTIL_LIBRARIES        ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/bin/avutil.lib)
+set(SWRESAMPLE_LIBRARIES    ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/bin/swresample.lib)
+set(SWSCALE_LIBRARIES       ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/bin/swscale.lib)
+
+find_package(FFmpeg REQUIRED COMPONENTS AVCODEC
+                                        AVDEVICE
+                                        AVFILTER
+                                        AVFORMAT
+                                        AVUTIL
+                                        SWSCALE
+                                        SWRESAMPLE
+)
 
 option(BUILD_EXAMPLES "Build examples" ON)
 option(BUILD_PLAYERS "Build players" ON)
 option(BUILD_TESTS "Build tests" ON)
-option(BUILD_QT5OPENGL "Build with Qt5 OpenGL module" ON)
+option(BUILD_QT6OPENGL "Build with Qt6 OpenGL module" ON)
 option(BUILD_QML "Build QML interfaces" ON)
 
 list(APPEND CMAKE_FIND_ROOT_PATH ${QTDIR})
 
-find_package(Qt5Core REQUIRED)
-find_package(Qt5Gui REQUIRED)
-get_target_property(qmake Qt5::qmake LOCATION)
+find_package(Qt6 COMPONENTS Core Widgets Sql Qml Core5Compat OpenGL REQUIRED)
+get_target_property(qmake Qt6::qmake LOCATION)
 execute_process(
     COMMAND ${qmake} -query QT_INSTALL_HEADERS
     OUTPUT_VARIABLE QT_INSTALL_HEADERS
@@ -57,7 +88,7 @@ execute_process(
     OUTPUT_VARIABLE QT_INSTALL_PREFIX
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${QT5_CFLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${QT6_CFLAGS}")
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
@@ -84,7 +115,7 @@ else()
   set(QTAV_INSTALL_QML ${QT_INSTALL_QML})
 endif()
 
-message(STATUS "Qt version: ${Qt5Core_VERSION_STRING}")
+message(STATUS "Qt version: ${Qt6Core_VERSION_STRING}")
 message(STATUS "Qt prefix: ${QT_INSTALL_PREFIX}")
 message(STATUS "QtAV headers prefix: ${QTAV_INSTALL_HEADERS}")
 message(STATUS "QtAV libs prefix: ${QTAV_INSTALL_LIBS}")
@@ -118,15 +149,14 @@ endif()
 
 add_subdirectory(src)
 
-find_package(Qt5Widgets)
-if(Qt5Widgets_FOUND)
+if(Qt6Widgets_FOUND)
   add_subdirectory(widgets)
 endif()
 
 if(BUILD_QML)
-  find_package(Qt5 COMPONENTS Qml Quick)
-  if(Qt5Qml_FOUND AND Qt5Quick_FOUND)
-      add_subdirectory(qml)
+  find_package(Qt6 COMPONENTS Qml Quick)
+  if(Qt6Qml_FOUND AND Qt6Quick_FOUND)
+      #add_subdirectory(qml)
   endif()
 endif()
 

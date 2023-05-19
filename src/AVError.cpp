@@ -24,6 +24,8 @@
 #include <QtCore/qdebug.h>
 #endif
 
+#include <QObject>
+
 namespace QtAV {
 
 namespace

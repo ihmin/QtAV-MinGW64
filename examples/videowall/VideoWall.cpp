@@ -20,7 +20,7 @@
 
 #include "VideoWall.h"
 #include <QApplication>
-#include <QDesktopWidget>
+//#include <QDesktopWidget>
 #include <QEvent>
 #include <QFileDialog>
 #include <QGridLayout>
@@ -46,7 +46,7 @@ VideoWall::VideoWall(QObject *parent) :
     view = new QWidget;
     if (view) {
         qDebug("WA_OpaquePaintEvent=%d", view->testAttribute(Qt::WA_OpaquePaintEvent));
-        view->resize(qApp->desktop()->size());
+        view->resize(qApp->screens()[0]->size());
         view->move(QPoint(0, 0));
         view->show();
     }
@@ -117,13 +117,13 @@ void VideoWall::show()
     }
     qDebug("show wall: %d x %d", r, c);
 
-    int w = view ? view->frameGeometry().width()/c : qApp->desktop()->width()/c;
-    int h = view ? view->frameGeometry().height()/r : qApp->desktop()->height()/r;
+    int w = view ? view->frameGeometry().width()/c : qApp->screens()[0]->size().width()/c;
+    int h = view ? view->frameGeometry().height()/r : qApp->screens()[0]->size().height()/r;
     if (view) {
         QGridLayout *layout = new QGridLayout;
         layout->setSizeConstraint(QLayout::SetMaximumSize);
         layout->setSpacing(1);
-        layout->setMargin(0);
+        //layout->setMargin(0);
         layout->setContentsMargins(0, 0, 0, 0);
         view->setLayout(layout);
     }
