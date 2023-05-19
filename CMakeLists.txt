@@ -56,11 +56,11 @@ find_package(FFmpeg REQUIRED COMPONENTS AVCODEC
                                         SWRESAMPLE
 )
 
-option(BUILD_EXAMPLES "Build examples" ON)
-option(BUILD_PLAYERS "Build players" ON)
-option(BUILD_TESTS "Build tests" ON)
+option(BUILD_EXAMPLES "Build examples" OFF)
+option(BUILD_PLAYERS "Build players" OFF)
+option(BUILD_TESTS "Build tests" OFF)
 option(BUILD_QT6OPENGL "Build with Qt6 OpenGL module" ON)
-option(BUILD_QML "Build QML interfaces" ON)
+option(BUILD_QML "Build QML interfaces" OFF)
 
 list(APPEND CMAKE_FIND_ROOT_PATH ${QTDIR})
 
