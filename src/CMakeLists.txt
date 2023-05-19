@@ -217,7 +217,8 @@ if(Qt6Gui_OPENGL_IMPLEMENTATION STREQUAL GL) # windows always set to GL
   if(EXISTS ${QT_INSTALL_HEADERS}/QtANGLE)
     set(DYNAMIC_GL 1) # assume Qt6Gui_OPENGL_IMPLEMENTATION is not GL if build with ANGLE only
     if(NOT DEFINED Qt6Gui_EGL_INCLUDE_DIRS)
-      set(Qt6Gui_EGL_INCLUDE_DIRS ${QT_INSTALL_HEADERS}/QtANGLE)
+      # not support in Qt6
+      #set(Qt6Gui_EGL_INCLUDE_DIRS ${QT_INSTALL_HEADERS}/QtANGLE)
     endif()
   else()
     set(OPENGL 1)

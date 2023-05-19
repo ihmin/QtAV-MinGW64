@@ -24,25 +24,28 @@ endif()
 set(CMAKE_CXX_VISIBILITY_PRESET hidden) #use with -fdata-sections -ffunction-sections to reduce target size
 set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
 
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
 include(MacroUtils)
 
-set(FFMPEG_INCLUDE_DIRS     ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/include)
-set(AVCODEC_INCLUDE_DIRS    ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/include/libavcodec)
-set(AVDEVICE_INCLUDE_DIRS   ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/include/libavdevice)
-set(AVFILTER_INCLUDE_DIRS   ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/include/libavfilter)
-set(AVFORMAT_INCLUDE_DIRS   ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/include/libavformat)
-set(AVUTIL_INCLUDE_DIRS     ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/include/)
-set(SWSCALE_INCLUDE_DIRS    ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/include/libswscale)
-set(SWRESAMPLE_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/include/libswresample)
+set(FFMPEG_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rd/ffmpeg CACHE PATH "path to the ffmpeg build (support up to version 4)")
 
-set(AVCODEC_LIBRARIES       ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/bin/avcodec.lib)
-set(AVDEVICE_LIBRARIES      ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/bin/avdevice.lib)
-set(AVFILTER_LIBRARIES      ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/bin/avfilter.lib)
-set(AVFORMAT_LIBRARIES      ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/bin/avformat.lib)
-set(AVUTIL_LIBRARIES        ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/bin/avutil.lib)
-set(SWRESAMPLE_LIBRARIES    ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/bin/swresample.lib)
-set(SWSCALE_LIBRARIES       ${CMAKE_SOURCE_DIR}/3rd/ffmpeg/bin/swscale.lib)
+set(FFMPEG_INCLUDE_DIRS     ${FFMPEG_DIR}/include)
+set(AVCODEC_INCLUDE_DIRS    ${FFMPEG_DIR}/include/libavcodec)
+set(AVDEVICE_INCLUDE_DIRS   ${FFMPEG_DIR}/include/libavdevice)
+set(AVFILTER_INCLUDE_DIRS   ${FFMPEG_DIR}/include/libavfilter)
+set(AVFORMAT_INCLUDE_DIRS   ${FFMPEG_DIR}/include/libavformat)
+set(AVUTIL_INCLUDE_DIRS     ${FFMPEG_DIR}/include/)
+set(SWSCALE_INCLUDE_DIRS    ${FFMPEG_DIR}/include/libswscale)
+set(SWRESAMPLE_INCLUDE_DIRS ${FFMPEG_DIR}/include/libswresample)
+
+set(AVCODEC_LIBRARIES       ${FFMPEG_DIR}/bin/avcodec.lib)
+set(AVDEVICE_LIBRARIES      ${FFMPEG_DIR}/bin/avdevice.lib)
+set(AVFILTER_LIBRARIES      ${FFMPEG_DIR}/bin/avfilter.lib)
+set(AVFORMAT_LIBRARIES      ${FFMPEG_DIR}/bin/avformat.lib)
+set(AVUTIL_LIBRARIES        ${FFMPEG_DIR}/bin/avutil.lib)
+set(SWRESAMPLE_LIBRARIES    ${FFMPEG_DIR}/bin/swresample.lib)
+set(SWSCALE_LIBRARIES       ${FFMPEG_DIR}/bin/swscale.lib)
 
 find_package(FFmpeg REQUIRED COMPONENTS AVCODEC
                                         AVDEVICE
