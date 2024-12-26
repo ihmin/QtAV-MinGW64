@@ -1,13 +1,4 @@
-### Prerequires
-
-pacman -S mingw-w64-x86_64-ffmpeg4.4
-
-
 # [QtAV](http://www.qtav.org)  [![Build Status](https://travis-ci.org/wang-bin/QtAV.svg)](https://travis-ci.org/wang-bin/QtAV) [![Appveyor](https://ci.appveyor.com/api/projects/status/github/wang-bin/qtav?svg=true&passingText=windows%20-%20OK)](https://ci.appveyor.com/project/wang-bin/qtav)
-
-
-**I'm not developing QtAV, patches are still welcome.** You can try my new [sdk](https://sourceforge.net/projects/mdk-sdk/files/nightly/) [which is actively developed](https://github.com/wang-bin/mdk-sdk)
-
 
 QtAV is a multimedia playback library based on Qt and FFmpeg. It can help you to write a player
 with less effort than ever before.
@@ -40,7 +31,7 @@ QtAV can meet your most demands
 - Multiple video outputs for 1 player
 - Video eq(software and OpenGL): brightness, contrast, saturation, hue
 - QML support. Most playback APIs are compatible with QtMultimedia module
-- Compatibility: QtAV can be built with both Qt4 and Qt5, FFmpeg(>=1.0) and [Libav](http://libav.org) (>=9.0). Latest FFmpeg release is recommended.
+- Compatibility: QtAV can be built with Qt4 and Qt5 and Qt6, FFmpeg(>=1.0 & <=4.x) and [Libav](http://libav.org) (>=9.0). FFmpeg 4.4.5 release is recommended.
 
 
 ### Extensible Framework
@@ -51,19 +42,13 @@ QtAV can meet your most demands
 # For Developers
 
 #### Requirements
-
-[![Qt](http://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Qt_logo.svg/64px-Qt_logo.svg.png "Qt4.8 or Qt5")](http://www.qt.io)
-[![FFmpeg](http://ffmpeg.org/ffmpeg-logo.png "(>=1.0)Latest version is recommanded")](http://ffmpeg.org)
-[![Libav](http://libav.org/libav-logo-text.png ">=9.0")](http://libav.org)
-![OpenAL](http://upload.wikimedia.org/wikipedia/zh/2/28/OpenAL_logo.png "OpenAL or OpenAL soft")
-
-**The required development files to build QtAV can be found in sourceforge
-page: [depends](https://sourceforge.net/projects/qtav/files/depends)**
-
+    
+    pacman -S mingw-w64-x86_64-qt6
+    pacman -S mingw-w64-x86_64-ffmpeg4.4
+    
 #### Build
 
 See the wiki [Build QtAV](https://github.com/wang-bin/QtAV/wiki/Build-QtAV) and [QtAV Build Configurations](https://github.com/wang-bin/QtAV/wiki/QtAV-Build-Configurations)
-
 
 #### How To Write a Player
 
