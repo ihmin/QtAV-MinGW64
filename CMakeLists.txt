@@ -39,13 +39,13 @@ set(AVUTIL_INCLUDE_DIRS     ${FFMPEG_DIR}/include/)
 set(SWSCALE_INCLUDE_DIRS    ${FFMPEG_DIR}/include/libswscale)
 set(SWRESAMPLE_INCLUDE_DIRS ${FFMPEG_DIR}/include/libswresample)
 
-set(AVCODEC_LIBRARIES       ${FFMPEG_DIR}/bin/avcodec.lib)
-set(AVDEVICE_LIBRARIES      ${FFMPEG_DIR}/bin/avdevice.lib)
-set(AVFILTER_LIBRARIES      ${FFMPEG_DIR}/bin/avfilter.lib)
-set(AVFORMAT_LIBRARIES      ${FFMPEG_DIR}/bin/avformat.lib)
-set(AVUTIL_LIBRARIES        ${FFMPEG_DIR}/bin/avutil.lib)
-set(SWRESAMPLE_LIBRARIES    ${FFMPEG_DIR}/bin/swresample.lib)
-set(SWSCALE_LIBRARIES       ${FFMPEG_DIR}/bin/swscale.lib)
+set(AVCODEC_LIBRARIES       ${FFMPEG_DIR}/lib/libavcodec.dll.a)
+set(AVDEVICE_LIBRARIES      ${FFMPEG_DIR}/lib/libavdevice.dll.a)
+set(AVFILTER_LIBRARIES      ${FFMPEG_DIR}/lib/libavfilter.dll.a)
+set(AVFORMAT_LIBRARIES      ${FFMPEG_DIR}/lib/libavformat.dll.a)
+set(AVUTIL_LIBRARIES        ${FFMPEG_DIR}/lib/libavutil.dll.a)
+set(SWRESAMPLE_LIBRARIES    ${FFMPEG_DIR}/lib/libswresample.dll.a)
+set(SWSCALE_LIBRARIES       ${FFMPEG_DIR}/lib/libswscale.dll.a)
 
 find_package(FFmpeg REQUIRED COMPONENTS AVCODEC
                                         AVDEVICE

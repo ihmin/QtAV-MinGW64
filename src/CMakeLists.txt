@@ -388,6 +388,7 @@ if(WIN32 OR WindowsStore OR WindowsPhone)
       directx/SurfaceInteropD3D11.cpp
       directx/D3D11VP.cpp
     )
+	list(APPEND SOURCES directx/SurfaceInteropD3D11GL.cpp)
     if(HAVE_EGL)
       list(APPEND SOURCES directx/SurfaceInteropD3D11EGL.cpp)
     endif()
@@ -442,6 +443,7 @@ if(HAVE_OPENSL)
   list(APPEND EXTRA_LIBS OpenSLES)
 endif()
 check_library_exists(va vaInitialize "" HAVE_VAAPI)
+set(HAVE_VAAPI OFF)
 if(HAVE_VAAPI)
   list(APPEND SOURCES
     vaapi/vaapi_helper.cpp
